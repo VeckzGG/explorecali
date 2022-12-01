@@ -7,7 +7,9 @@ import com.example.ec.domain.TourPackage;
 import com.example.ec.repository.TourPackageRepository;
 import com.example.ec.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TourService {
     private TourRepository tourRepository;
     TourPackageRepository tourPackageRepository;
@@ -19,13 +21,13 @@ public class TourService {
         this.tourPackageRepository = tourPackageRepository;
     }
 
-    public Tour createTour(Integer id, String title, String description, String blurb,
+    public Tour createTour(String title, String description, String blurb,
                            Integer price, String duration, String bullets, String keywords,
                            String tourPackageName, Difficulty difficulty, Region region){
-        TourPackage tourPackage = tourPackageRepository.findById(tourPackageName)
+        TourPackage tourPackage = tourPackageRepository.findByName(tourPackageName)
                 .orElseThrow(() -> new RuntimeException("Tour package does not exist " + tourPackageName));
 
-        return tourRepository.save(new Tour(id, title, description, blurb, price,
+        return tourRepository.save(new Tour(title, description, blurb, price,
                 duration, bullets, keywords, tourPackage, difficulty, region));
 
     }
